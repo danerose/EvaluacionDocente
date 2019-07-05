@@ -5,13 +5,7 @@ import 'package:flutter/widgets.dart';
 //Own Imports
 import 'package:evaluacion_docente/src/components/index.dart';
 
-
-class TestPage extends StatefulWidget {
-  @override
-  State createState() => TestPageState();
-}
-
-class TestPageState extends State<TestPage> {
+class EvaluationListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

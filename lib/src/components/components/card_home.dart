@@ -1,8 +1,6 @@
-import 'package:evaluacion_docente/src/components/components/text_content.dart';
-import 'package:evaluacion_docente/src/pages/login_school_page.dart';
-import 'package:evaluacion_docente/src/pages/login_student_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:evaluacion_docente/src/components/components/text_content.dart';
 
 class HomeCardWidget extends StatelessWidget {
   final int user;
@@ -28,25 +26,18 @@ _cardContent(context, user, title, description, footer) {
     borderRadius: BorderRadius.all(Radius.circular(8.0)),
     child: InkWell(
       onTap: () {
-        if(user == 1){    
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginStudentPage()),
-        ); 
-        }else{
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginSchoolPage(user)),
-        ); 
+        if (user == 1) {
+          Navigator.pushNamed(context, 'login');
+        } else {
+          Navigator.pushNamed(context, 'login');
         }
       },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
           image: DecorationImage(
-            image:AssetImage('assets/images/banner_shape.jpg'),
-            fit: BoxFit.cover
-          ),
+              image: AssetImage('assets/images/banner_shape.jpg'),
+              fit: BoxFit.cover),
         ),
         padding: EdgeInsets.all(10.0),
         child: Row(
@@ -104,9 +95,9 @@ _cardContent(context, user, title, description, footer) {
                               Align(
                                 alignment: Alignment.bottomRight,
                                 child: Container(
-                                  margin: EdgeInsets.only(top:3.0),
+                                  margin: EdgeInsets.only(top: 3.0),
                                   child: TextContent(footer, 13.0,
-                                      TextAlign.end, Colors.white,true),
+                                      TextAlign.end, Colors.white, true),
                                 ),
                               ),
                             ],
@@ -117,7 +108,7 @@ _cardContent(context, user, title, description, footer) {
                   ),
                 )),
             Expanded(
-              child: Container(
+                child: Container(
               child: Align(
                 alignment: Alignment.center,
                 child: Icon(
@@ -126,8 +117,7 @@ _cardContent(context, user, title, description, footer) {
                   size: 40.0,
                 ),
               ),
-             )
-            ),
+            )),
           ],
         ),
       ),
