@@ -9,8 +9,8 @@ Map<String, WidgetBuilder> getRoutes() {
   return <String, WidgetBuilder>{
     '/'          : (BuildContext context) => LoadingPage(),
     'home'       : (BuildContext context) => HomePage(),
-    'login'      : (BuildContext context) => LoginPage('user'),
+    'login'      : (BuildContext context) => LoginPage(),
     'evaluation' : (BuildContext context) => EvaluationListPage(),
-    'questions'  : (BuildContext context) => QuestionsPage('')
+    'questions'  : (BuildContext context) => QuestionsPage()
   };
 }

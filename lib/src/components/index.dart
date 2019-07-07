@@ -2,8 +2,7 @@
 export 'components/app_bar.dart';
 export 'components/text_content.dart';
 export 'components/card_home.dart';
-export 'components/card_test.dart';
-export 'components/login_input.dart';
+export 'components/card_evaluation_list.dart';
 
 
 //Expor Images

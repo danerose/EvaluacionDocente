@@ -4,14 +4,13 @@ import 'package:flutter/widgets.dart';
 //Own Imports
 import 'package:evaluacion_docente/src/components/components/text_content.dart';
 import 'package:evaluacion_docente/src/components/images/background_footer.dart';
-import 'package:evaluacion_docente/src/pages/questions_page.dart';
 
-class TestCardWidget extends StatelessWidget {
+class EvaluationCardWidget extends StatelessWidget {
   final String name;
   final String subject;
   final String status;
   final String footer;
-  TestCardWidget(this.name, this.subject, this.status, this.footer);
+  EvaluationCardWidget(this.name, this.subject, this.status, this.footer);
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +31,7 @@ _cardContent(context, name, subject, status, footer) {
     borderRadius: BorderRadius.all(Radius.circular(8.0)),
     child: InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => QuestionsPage(name)),
-        ); 
+        Navigator.pushNamed(context, 'questions');
       },
       //Container de cada cart
       child: Container(
@@ -134,7 +130,7 @@ _alignContent(alignment, padding, text, sizeText, alignText, bold) {
       alignment: alignment,
       child: Container(
         padding: EdgeInsets.all(padding),
-        child: TextContent(text, sizeText, alignText, Colors.white, bold),
+        child: TextContent(text, sizeText, alignText, Colors.white,0.0,false),
       ));
 }
 
@@ -152,13 +148,13 @@ _status(status) {
     children: <Widget>[
       Container(
         margin: EdgeInsets.only(right:15.0),
-        child: TextContent('Estado', 12.0, TextAlign.start, Colors.white, false),
+        child: TextContent('Estado', 12.0, TextAlign.start, Colors.white,0.0, false),
       ),
       Container(
         padding: EdgeInsets.only(left: 15.0,right:15.0),
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        child: TextContent(text, 12.0, TextAlign.center, Colors.white, false),
+        child: TextContent(text, 12.0, TextAlign.center, Colors.white,0.0, false),
       ),
     ],
   );

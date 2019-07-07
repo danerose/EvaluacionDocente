@@ -12,8 +12,6 @@ class EvaluationListPage extends StatelessWidget {
       body: _body(context)
     );
   }
-}
-
 
 _body(context) {
   return Stack(
@@ -37,6 +35,7 @@ _sliverAppBar(){
     expandedHeight: 200.0,
     pinned: true,
     floating: true,
+    snap: false,
     flexibleSpace: _flexibleSpace(),
   );
 }
@@ -44,7 +43,7 @@ _sliverAppBar(){
 _flexibleSpace(){
   return FlexibleSpaceBar(
     centerTitle: true,
-    title:TextContent('Evaluaciones',20.0,TextAlign.center,Colors.white,true),
+    title:TextContent('Evaluaciones',20.0,TextAlign.center,Colors.white,0.0,true),
     background: BackgroundBanner(),
   );
 }
@@ -58,7 +57,7 @@ _sliverItems(context){
           tag: 'Alumno',
           child: Container(
           height: MediaQuery.of(context).size.height/4,
-          child: TestCardWidget(
+          child: EvaluationCardWidget(
             'Carlos Martin Tamay Gomez',
             'Aplicaciones Moviles Avanzadas',
             'Hecho',
@@ -70,7 +69,7 @@ _sliverItems(context){
           tag: 'Docente',
           child: Container(
           height: MediaQuery.of(context).size.height/4,
-          child: TestCardWidget(
+          child: EvaluationCardWidget(
             'Moises Ortefa',
             'Sistemas Inteligentes',
             'Pendiente',
@@ -82,7 +81,7 @@ _sliverItems(context){
           tag: 'Administrador',
           child: Container(
           height: MediaQuery.of(context).size.height/4,
-          child: TestCardWidget(
+          child: EvaluationCardWidget(
             'Gino Madrazo',
             'Inteligencia Artificial',
             'Hecho',
@@ -94,7 +93,7 @@ _sliverItems(context){
           tag: 'Gerencia',
           child: Container(
           height: MediaQuery.of(context).size.height/4,
-          child: TestCardWidget(
+          child: EvaluationCardWidget(
             'Manuel Flores',
             'Seguridad Informatica',
             'Pendiente',
@@ -105,4 +104,6 @@ _sliverItems(context){
       ]
     ),
   );
+ } 
+
 }

@@ -14,7 +14,7 @@ class HomeCardWidget extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(15.0),
       child: _cardContent(context, user, title, description, footer),
     );
   }
@@ -26,11 +26,7 @@ _cardContent(context, user, title, description, footer) {
     borderRadius: BorderRadius.all(Radius.circular(8.0)),
     child: InkWell(
       onTap: () {
-        if (user == 1) {
-          Navigator.pushNamed(context, 'login');
-        } else {
-          Navigator.pushNamed(context, 'login');
-        }
+        Navigator.pushNamed(context, 'login');
       },
       child: Container(
         decoration: BoxDecoration(
@@ -58,9 +54,9 @@ _cardContent(context, user, title, description, footer) {
                               Align(
                                   alignment: Alignment.topLeft,
                                   child: Container(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: TextContent(title, 20.0,
-                                        TextAlign.start, Colors.white, true),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: TextContent(title, 18.0,
+                                        TextAlign.start, Colors.white,0.0,true),
                                   )),
                               Container(
                                 color: Colors.black,
@@ -71,8 +67,8 @@ _cardContent(context, user, title, description, footer) {
                                 child: Container(
                                   padding:
                                       EdgeInsets.only(right: 5.0, top: 10.0),
-                                  child: TextContent(description, 18.0,
-                                      TextAlign.start, Colors.white, false),
+                                  child: TextContent(description, 15.0,
+                                      TextAlign.start, Colors.white, 0.0,false),
                                 ),
                               ),
                             ],
@@ -97,7 +93,7 @@ _cardContent(context, user, title, description, footer) {
                                 child: Container(
                                   margin: EdgeInsets.only(top: 3.0),
                                   child: TextContent(footer, 13.0,
-                                      TextAlign.end, Colors.white, true),
+                                      TextAlign.end, Colors.white,0.0,true),
                                 ),
                               ),
                             ],
