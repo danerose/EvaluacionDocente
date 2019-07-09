@@ -15,64 +15,59 @@ class LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2),
-        () => Navigator.pushReplacementNamed(context, 'home'));
+      Future.delayed(const Duration(seconds: 2),
+        () => Navigator.pushReplacementNamed(context, 'home')
+      );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        components.BackgroundImage(),
-        _containerContent()])
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          components.BackgroundImage(),
+          _containerContent()
+        ]
+      )
     );
   }
-}
+
 
 _containerContent() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: <Widget>[
-      Expanded(
-        flex: 2,
-        child: Container(
+  return Center(
+    child: Column(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Hero(
-                tag: 'load',
-                child: components.LogoUPQROO(200.0, 200.0),
-              ),
-              SizedBox(height: 10),
-              components.TextContent('Sistema de Evaluación', 20.0, TextAlign.center,
-                  Colors.black, true)
-            ],
+              children: <Widget>[
+                Hero(
+                  tag: 'load',
+                  child: components.LogoUPQROO(1,200.0, 200.0),
+                ),
+                SizedBox(height: 20.0),
+                components.TextContent('Sistema de Evaluación', 20.0,TextAlign.center, Colors.black,0.0, true),
+              ],
           ),
         ),
-      ),
-      Expanded(
-        flex: 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _progressBar(),
-            SizedBox(height: 30),
-            components.TextContent('Verificando Conexión . . .', 15.0, TextAlign.center,
-                Colors.black, false)
-          ],
-        ),
-      )
-    ],
+        Expanded(
+          child: Center(
+            child: _progressBar(),
+          )
+        )
+      ],
+    )
   );
 }
-
-//items Container
 
 _progressBar() {
   return CircularProgressIndicator(
     backgroundColor: Colors.cyan,
-    strokeWidth: 3.0,
+    strokeWidth: 5.0,
     valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
   );
+ } 
+
 }
