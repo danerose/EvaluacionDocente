@@ -30,6 +30,7 @@ class Items {
 class QuestionsPageState extends State<QuestionsPage> {
   final _formKey = GlobalKey<FormState>();
   var edit;
+  var newQuest;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +39,17 @@ class QuestionsPageState extends State<QuestionsPage> {
         leading: Container(),
       ),
       body: _body(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.cyan,
+        onPressed: () {
+          _showDialog('Agregar', 'Agregar', Colors.green,
+              'Estas por agregar una pregunta',items.questions.length);
+        },
+      ),
     );
   }
 
@@ -85,24 +97,25 @@ class QuestionsPageState extends State<QuestionsPage> {
         )
       ],
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        color: Color.fromRGBO(0, 0, 0, 0.5),
         margin: EdgeInsets.all(10.0),
         child: InkWell(
-          splashColor: Colors.cyan,
-          onTap: (){},
-            child: Row(
+          splashColor: Colors.white,
+          onTap: () {},
+          child: Row(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: components.TextContent('Preguntas #', 10.0,
-                        TextAlign.center, Colors.black, 0.0, false),
-                  ),
-                  Container(
                     margin: EdgeInsets.all(5.0),
                     child: CircleAvatar(
+                      backgroundColor: Colors.white,
                       maxRadius: 30.0,
-                      child: Text("${index + 1}"),
+                      child: components.TextContent("${index + 1}", 20.0,
+                          TextAlign.center, Colors.black, 0.0, true),
                     ),
                   )
                 ],
@@ -113,10 +126,10 @@ class QuestionsPageState extends State<QuestionsPage> {
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          margin:
-                              EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
+                          margin: EdgeInsets.only(
+                              left: 10.0, right: 10.0, top: 20.0),
                           child: components.TextContent(item, 15.0,
-                              TextAlign.justify, Colors.black, 0.0, false),
+                              TextAlign.justify, Colors.white, 0.0, false),
                         )),
                     SizedBox(height: 30.0),
                     Align(
@@ -125,18 +138,18 @@ class QuestionsPageState extends State<QuestionsPage> {
                         margin: EdgeInsets.only(right: 10.0),
                         width: 30.0,
                         height: 3.0,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
-                        margin: EdgeInsets.only(right: 10.0),
+                        margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
                         child: components.TextContent(
-                            'Deslice a ambos lados para mas opciones',
+                            'Deslice a uno de los lados para mas opciones',
                             10.0,
                             TextAlign.end,
-                            Colors.black,
+                            Colors.white,
                             0.0,
                             true),
                       ),
@@ -151,15 +164,15 @@ class QuestionsPageState extends State<QuestionsPage> {
     );
   }
 
-
   _showDialog(action, alerta, color, description, index) {
     var tipo;
-    if(action == 'Eliminar'){
+    if (action == 'Eliminar') {
       tipo = Container(
-        child: components.TextContent("${items.questions[index]}",18.0,TextAlign.justify,Colors.black,0.0,false),
+        child: components.TextContent("${items.questions[index]}", 18.0,
+            TextAlign.justify, Colors.black, 0.0, false),
       );
-    }else{
-      tipo  = _form(index);
+    } else {
+      tipo = _form(action, index);
     }
     return showDialog(
         context: context,
@@ -188,29 +201,41 @@ class QuestionsPageState extends State<QuestionsPage> {
                   Navigator.of(context).pop();
                 },
               ),
-              _actionButton(action, index,color)
+              _actionButton(action, index, color)
             ],
           );
         });
   }
-  _form(index){
+
+  _form(action, index) {
+    var add;
+    if (action == 'Editar') {
+      add = "${items.questions[index]}";
+    } else {
+      add = "";
+    }
     return Form(
-              key: _formKey,
-              child: TextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
-                initialValue: "${items.questions[index]}",
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return "La pregunta no puede quedar vacia";
-                  }else{
-                    edit = value;
-                  }
-                },
-              ),
-            );
+      key: _formKey,
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        maxLines: 5,
+        initialValue: add,
+        validator: (value) {
+          if (value.isEmpty) {
+            return "La pregunta no puede quedar vacia";
+          } else {
+            if (action == 'Editar') {
+              edit = value;
+            } else {
+              newQuest = value;
+            }
+          }
+        },
+      ),
+    );
   }
-  _actionButton(action, index,color) {
+
+  _actionButton(action, index, color) {
     return FlatButton(
       child: components.TextContent(
           action, 18.0, TextAlign.justify, color, 0.5, true),
@@ -220,11 +245,18 @@ class QuestionsPageState extends State<QuestionsPage> {
             items.questions.removeAt(index);
             Navigator.of(context).pop();
           });
-        }else{
-          if(_formKey.currentState.validate()){
+        } else if (action == 'Editar') {
+          if (_formKey.currentState.validate()) {
             setState(() {
-             items.questions[index] = edit;
-             Navigator.of(context).pop();
+              items.questions[index] = edit;
+              Navigator.of(context).pop();
+            });
+          }
+        } else {
+          if (_formKey.currentState.validate()) {
+            setState(() {
+              items.questions.insert(index, newQuest);
+              Navigator.of(context).pop();
             });
           }
         }
