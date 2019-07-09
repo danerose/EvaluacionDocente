@@ -1,10 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 //Own Imports
 import 'package:evaluacion_docente/src/components/index.dart' as components;
+import 'package:evaluacion_docente/src/pages/main_page.dart';
 
 class LoginPage extends StatefulWidget{
+  final user;
+  LoginPage(this.user);
   @override
   State createState()  => LoginPageState();
 }
@@ -14,17 +18,17 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _body(context,formKey),
+      body: _body(context,formKey,widget.user),
     );
   }
 
 
-_body(context,formkey) {
+_body(context,formkey,user) {
   return Stack(
     fit: StackFit.expand,
     children: <Widget>[
       Hero(
-        tag: 'User',
+        tag:user,
         child: Container(
           color: Color.fromRGBO(33, 182, 198, 0.5),
         ),
@@ -32,28 +36,28 @@ _body(context,formkey) {
       components.BackgroundImage(),
       CustomScrollView(
         slivers: <Widget>[
-          _sliverAppBar(), 
-          _sliverFillRemaining(context,formkey)
+          _sliverAppBar(user), 
+          _sliverFillRemaining(context,formkey,user)
         ],
       )
     ],
   );
 }
 
-_sliverAppBar() {
+_sliverAppBar(user) {
   return SliverAppBar(
     expandedHeight: 200,
     floating: true,
     pinned: true,
     snap: false,
     flexibleSpace: FlexibleSpaceBar(
-      title: components.TextContent('Login',20.0, TextAlign.end, Colors.white,0.0,true),
+      title: components.TextContent('Login  '+user,20.0, TextAlign.end, Colors.white,0.0,true),
       background: components.BackgroundBanner(),
     )
   );
 }
 
-_sliverFillRemaining(context,formkey) {
+_sliverFillRemaining(context,formkey,user) {
   return SliverFillRemaining(
    child: Center(
     child: SingleChildScrollView(
@@ -70,7 +74,7 @@ _sliverFillRemaining(context,formkey) {
                 child:_textFormField(Icons.perm_identity,false,'Matricula','Campo Obligatorio',formkey),
               ),
               SizedBox(height: 30),
-              _button(context,formkey)  
+              _button(context,formkey,user)  
             ],
           ),
         )
@@ -97,7 +101,7 @@ return TextFormField(
  );
 }
 
-_button(context,formkey){
+_button(context,formkey,user){
   return Container(
     width: double.infinity,
     height: 80.0,
@@ -110,7 +114,9 @@ _button(context,formkey){
       ),
       onPressed: (){
         if(formkey.currentState.validate()){
-          Navigator.pushNamed(context, 'evaluation');
+          Navigator.push(context, new MaterialPageRoute(
+            builder: (BuildContext context) => MainPage(user),
+          ));
         }
       },
       child:components.TextContent('Entrar',15.0,TextAlign.center,Colors.white,0.5, true),

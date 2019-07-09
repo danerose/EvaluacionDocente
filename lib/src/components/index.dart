@@ -10,4 +10,3 @@ export 'images/background_image.dart';
 export 'images/background_banner.dart';
 export 'images/banner_upqroo.dart';
 export 'images/logo_upqroo.dart';
-export 'images/background_footer.dart';
