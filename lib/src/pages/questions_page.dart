@@ -151,16 +151,16 @@ class QuestionsPageState extends State<QuestionsPage> {
     );
   }
 
-  _edirForm() {
-    return Form(
-      key: _formKey,
-      child: TextFormField(
-        decoration: InputDecoration(hintText: 'Escribe lo'),
-      ),
-    );
-  }
 
   _showDialog(action, alerta, color, description, index) {
+    var tipo;
+    if(action == 'Eliminar'){
+      tipo = Container(
+        child: components.TextContent("${items.questions[index]}",18.0,TextAlign.justify,Colors.black,0.0,false),
+      );
+    }else{
+      tipo  = _form(index);
+    }
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -179,21 +179,7 @@ class QuestionsPageState extends State<QuestionsPage> {
                 )
               ],
             ),
-            content: Form(
-              key: _formKey,
-              child: TextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
-                initialValue: "${items.questions[index]}",
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return "La pregunta no puede quedar vacia";
-                  }else{
-                    edit = value;
-                  }
-                },
-              ),
-            ),
+            content: tipo,
             actions: <Widget>[
               FlatButton(
                 child: components.TextContent('Cancelar', 18.0,
@@ -207,7 +193,23 @@ class QuestionsPageState extends State<QuestionsPage> {
           );
         });
   }
-
+  _form(index){
+    return Form(
+              key: _formKey,
+              child: TextFormField(
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                initialValue: "${items.questions[index]}",
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "La pregunta no puede quedar vacia";
+                  }else{
+                    edit = value;
+                  }
+                },
+              ),
+            );
+  }
   _actionButton(action, index,color) {
     return FlatButton(
       child: components.TextContent(
