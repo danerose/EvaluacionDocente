@@ -50,54 +50,39 @@ _sliverItems(context) {
   return SliverList(
     delegate: SliverChildListDelegate(<Widget>[
       Hero(
-        tag: 'Alumno',
-        child: Container(
-          height: 200.0,
+        tag: 'Alumnos',
           child: components.HomeCardWidget(
-            1,
             'Alumnos',
             'Evaluación Alumno - Docente',
             'Presiona para Iniciar Sesión',
           ),
-        ),
       ),
       Hero(
-        tag: 'Docente',
-        child: Container(
-          height:200.0,
+        tag: 'Docentes',
           child: components.HomeCardWidget(
-            2,
             'Docentes',
             'Evaluación Docente - Docente',
             'Presiona para Iniciar Sesión',
           ),
-        ),
       ),
       Hero(
         tag: 'Coordinador',
-        child: Container(
-          height: 200.0,
           child: components.HomeCardWidget(
-            3,
             'Coordinador',
             'Evaluación Coordinador - Docente',
             'Presiona para Iniciar Sesión',
           ),
-        ),
       ),
       Hero(
         tag: 'Administrador',
-        child: Container(
-          height: 200.0,
           child: components.HomeCardWidget(
-            4,
             'Administrador',
             'Exclusivamente para el Administrador',
             'Presiona para Iniciar Sesión',
           ),
-        ),
       ),
-    ]),
+    ]
+   ),
   );
  }
 

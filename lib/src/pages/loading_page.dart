@@ -45,7 +45,7 @@ _containerContent() {
               children: <Widget>[
                 Hero(
                   tag: 'load',
-                  child: components.LogoUPQROO(200.0, 200.0),
+                  child: components.LogoUPQROO(1,200.0, 200.0),
                 ),
                 SizedBox(height: 20.0),
                 components.TextContent('Sistema de Evaluación', 20.0,TextAlign.center, Colors.black,0.0, true),

@@ -1,9 +1,9 @@
+import 'package:evaluacion_docente/src/pages/test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 //Own Imports
-import 'package:evaluacion_docente/src/components/components/text_content.dart';
-import 'package:evaluacion_docente/src/components/images/background_footer.dart';
+import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class EvaluationCardWidget extends StatelessWidget {
   final String name;
@@ -14,148 +14,131 @@ class EvaluationCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //All container del fondo
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      padding: EdgeInsets.all(10.0),
-      child: _cardContent(context, name, subject, status, footer),
+    return Center(
+      child: Card(
+        shape: RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(15.0),
+        ),
+        margin: EdgeInsets.all(10.0),
+        color: Color.fromRGBO(0,0,0,0.5),
+        child: InkWell(
+            splashColor: Colors.black,
+             borderRadius: BorderRadius.circular(15.0),
+            onTap: () {
+              Navigator.push(context, new MaterialPageRoute(
+              builder: (BuildContext context) => TestPage(name),
+            ));
+            },
+            child: Container(
+              child: _cardContent(context, name, subject, status, footer),
+            )),
+      ),
     );
   }
 }
 
 _cardContent(context, name, subject, status, footer) {
-  return Material(
-    elevation: 10.0,
-    color: Color.fromRGBO(0, 0, 0, 0.6),
-    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-    child: InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, 'questions');
-      },
-      //Container de cada cart
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 4,
-              child: Container(
-                child: _contentCard(context, name, subject, status, footer),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: _footerCard(context, name, subject, status, footer),
-              ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-_contentCard(context, name, subject, status, footer) {
-  return Row(
+  return Column(
+    mainAxisSize: MainAxisSize.max,
     children: <Widget>[
-      Expanded(
-          flex: 7,
-          child: Container(
-            padding: EdgeInsets.only(right: 5.0),
+      Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: components.LogoUPQROO(2,100.0, 100.0),
+          )),
+          Expanded(
+            flex: 3,
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Expanded(
+                Align(
+                  alignment: Alignment.center,
+                  child:Container(
+                    margin: EdgeInsets.all(5.0),
+                    child:components.TextContent(name,20.0,TextAlign.left,Colors.white,0.0,false),
+                  )
+                ),
+                Container(
+                  margin: EdgeInsets.all(3.0),
+                  height: 3.0,
+                  color: Colors.white70,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child:Container(
+                    margin: EdgeInsets.all(5.0),
+                    child:components.TextContent(subject,15.0,TextAlign.left,Colors.white,0.0,false),
+                  )
+                ),
+                _status(status),
+                Align(
+                  alignment: Alignment.bottomRight,
                   child: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        _alignContent(Alignment.topLeft, 10.0, name, 20.0,
-                            TextAlign.start, true),
-                        Container(
-                          margin:EdgeInsets.only(left:5.0),
-                          color: Colors.white,
-                          height: 1.0,
-                        ),
-                        _alignContent(Alignment.centerLeft, 10.0, subject, 18.0,
-                            TextAlign.start, false),
-                        Container(
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: _status(status),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 3.0,
-                            width: 30.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                        _alignContent(Alignment.bottomRight, 0.0, footer, 10.0,
-                            TextAlign.end, true)
-                      ],
-                    ),
+                    margin: EdgeInsets.only(top: 10.0,right:10.0,bottom: 5.0),
+                    height: 5.0,
+                    width: 30.0,
+                    color: Colors.white,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    margin: EdgeInsets.only(right:10.0,bottom: 5.0),
+                    child: components.TextContent(footer,10.0,TextAlign.end,Colors.white,0.0,true),
                   ),
                 ),
               ],
             ),
-          )),
-      Expanded(
-          child: Container(
-        child: Align(
-          alignment: Alignment.center,
-          child: Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-            size: 40.0,
           ),
+        ],
+      ),
+      Container(
+        height: 30.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomLeft:Radius.circular(15.0),bottomRight:Radius.circular(15.0)),
+          image: DecorationImage(
+          image: AssetImage('assets/images/footer_upqroo.png'),
+          fit: BoxFit.cover
+         )
         ),
-      )),
+      )
     ],
   );
 }
 
-_footerCard(context, user, title, description, footer) {
-  return Container(
-    child: BackgroundFooter(),
-  );
-}
-
-_alignContent(alignment, padding, text, sizeText, alignText, bold) {
-  return Align(
-      alignment: alignment,
-      child: Container(
-        padding: EdgeInsets.all(padding),
-        child: TextContent(text, sizeText, alignText, Colors.white,0.0,false),
-      ));
-}
-
 _status(status) {
-  Color color;
-  String text;
+  var color;
+  var text;
   if (status == 'Hecho') {
-    color = Colors.red;
+    color = Colors.green;
     text = 'Realizado';
   } else {
-    color = Colors.teal;
+    color = Colors.amber;
     text = 'Pendiente';
   }
   return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
     children: <Widget>[
-      Container(
-        margin: EdgeInsets.only(right:15.0),
-        child: TextContent('Estado', 12.0, TextAlign.start, Colors.white,0.0, false),
-      ),
-      Container(
-        padding: EdgeInsets.only(left: 15.0,right:15.0),
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        child: TextContent(text, 12.0, TextAlign.center, Colors.white,0.0, false),
-      ),
+      Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            margin: EdgeInsets.only(right: 5.0),
+            child: components.TextContent(
+                'Estado:', 15.0, TextAlign.right, Colors.white, 0.5, false),
+          )),
+      Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            padding:
+                EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0, bottom: 2.0),
+            decoration: BoxDecoration(
+                color: color, borderRadius: BorderRadius.circular(8.0)),
+            margin: EdgeInsets.only(right: 20.0, left: 10.0),
+            child: components.TextContent(
+                text, 10.0, TextAlign.right, Colors.white, 0.5, false),
+          )),
     ],
   );
 }

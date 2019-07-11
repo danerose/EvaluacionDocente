@@ -1,9 +1,10 @@
-import 'package:evaluacion_docente/src/bloc/provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 //Own Imports
 import 'package:evaluacion_docente/src/components/index.dart' as components;
+// import 'package:evaluacion_docente/src/pages/main_page.dart';
+import 'package:evaluacion_docente/src/bloc/provider.dart';
 
 class LoginPage extends StatelessWidget {
 
@@ -84,7 +85,8 @@ class LoginPage extends StatelessWidget {
             filled: true,
             fillColor: Color.fromRGBO(0, 0, 0, 0.0),
             labelText: textHint,
-            counterText: snapshot.data
+            counterText: snapshot.data,
+            errorText: snapshot.error
           ),
           obscureText: type,
           onChanged: bloc.changeEnrollment,
