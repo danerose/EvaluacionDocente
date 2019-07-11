@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //Own Import
 import 'package:evaluacion_docente/src/routes/routes.dart';
+import 'package:evaluacion_docente/src/bloc/provider.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -11,11 +12,13 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.cyan, accentColor: Colors.white),
-      initialRoute: '/',
-      routes: getRoutes(),
+    return Provider(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(primaryColor: Colors.cyan, accentColor: Colors.white),
+        initialRoute: '/',
+        routes: getRoutes(),
+      )
     );
   }
 }
