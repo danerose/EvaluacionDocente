@@ -22,7 +22,7 @@ class HomeCardWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
             image: DecorationImage(
-              image: AssetImage("assets/images/banner_shape.jpg"),
+              image: AssetImage("assets/images/shape.png"),
               fit: BoxFit.cover,
             ),
           ),

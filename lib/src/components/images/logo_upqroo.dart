@@ -3,23 +3,20 @@ import 'package:flutter/material.dart';
 class LogoUPQROO extends StatelessWidget{
   
   final int wich;
-  final double width;
-  final double height;
+  final width;
+  final height;
   LogoUPQROO(this.wich,this.width,this.height);
+  
   @override
   Widget build(BuildContext context) {
-    if(wich == 1){
-    return Image(
-     width: width,
-     height: height,
-     image: AssetImage('assets/images/logo_upqroo.png'),
-    );
-    }else{
-    return Image(
-     width: width,
-     height: height,
-     image: AssetImage('assets/images/logo_upqroo_white.png'),
-    ); 
+    var image = AssetImage('assets/images/logo.png');
+    if(wich == 2){
+      image = AssetImage('assets/images/logo_white.png');
     }
+    return Image(
+     width: width,
+     height: height,
+     image: image
+    );
   }
 }
