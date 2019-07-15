@@ -47,7 +47,7 @@ class QuestionsPageState extends State<QuestionsPage> {
         backgroundColor: Colors.cyan,
         onPressed: () {
           _showDialog('Agregar', 'Agregar', Colors.green,
-              'Estas por agregar una pregunta',items.questions.length);
+              'Estas por agregar una pregunta', items.questions.length);
         },
       ),
     );
@@ -230,6 +230,7 @@ class QuestionsPageState extends State<QuestionsPage> {
               newQuest = value;
             }
           }
+          return "chale";
         },
       ),
     );
