@@ -25,9 +25,11 @@ class HttpProvider {
 
   Future<List<ProfesorModel>> loginNProfesors() async {
     final path = '$urlBase/user/login';
-    final data = '{"Matricula":201600090,"Tipo":1,"Periodo":3192}';
+    final data = {"Matricula": "201600090", "Tipo": "1", "Periodo": "3192"};
     print(data);
-    final res = await http.post(path, body: jsonEncode(data), headers: headers);
+    print(json.encode(data));
+    final res =
+        await http.post(path, body:data, headers: headers);
     final Map<String, dynamic> decodedData = json.decode(res.body);
     final List<ProfesorModel> profesors = new List();
 
