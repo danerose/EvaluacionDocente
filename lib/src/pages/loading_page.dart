@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
@@ -23,15 +24,13 @@ class LoadingPageState extends State<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = ProviderBloc.data(context);
+    bloc.loadPeriod();
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          components.BackgroundImage(),
-          _containerContent()
-        ]
-      )
-    );
+        body: Stack(fit: StackFit.expand, children: <Widget>[
+      components.BackgroundImage(),
+      _containerContent()
+    ]));
   }
 
   _containerContent() {

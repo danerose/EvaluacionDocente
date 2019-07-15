@@ -1,4 +1,4 @@
-import 'package:evaluacion_docente/src/pages/login_page.dart';
+import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
@@ -7,10 +7,12 @@ class HomeCardWidget extends StatelessWidget {
   final String title;
   final String description;
   final String footer;
-  HomeCardWidget(this.title, this.description, this.footer);
+  final String role;
+  HomeCardWidget(this.title, this.description, this.footer, this.role);
 
   @override
   Widget build(BuildContext context) {
+    final bloc = ProviderBloc.data(context);
     return Center(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -28,12 +30,12 @@ class HomeCardWidget extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
-              Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => LoginPage(title),
-            ));
+              bloc.changeRole(role);
+              print(bloc.role);
+              Navigator.pushNamed(context, 'login');
             },
             child: Container(
-              child: _cardContent(context,title, description, footer),
+              child: _cardContent(context, title, description, footer),
             ),
           ),
         ),
@@ -42,7 +44,7 @@ class HomeCardWidget extends StatelessWidget {
   }
 }
 
-_cardContent(context,title, description, footer) {
+_cardContent(context, title, description, footer) {
   return Column(
     mainAxisSize: MainAxisSize.max,
     children: <Widget>[
@@ -52,7 +54,7 @@ _cardContent(context,title, description, footer) {
         children: <Widget>[
           Expanded(
             flex: 7,
-            child: _body(context,title, description, footer),
+            child: _body(context, title, description, footer),
           ),
           Expanded(
             child: Align(
@@ -69,7 +71,7 @@ _cardContent(context,title, description, footer) {
   );
 }
 
-_body(context,title, description, footer) {
+_body(context, title, description, footer) {
   return Column(
     children: <Widget>[
       Align(
