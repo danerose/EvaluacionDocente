@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 //Own Imports
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
@@ -55,6 +54,7 @@ _sliverItems(context) {
             'Alumnos',
             'Evaluación Alumno - Docente',
             'Presiona para Iniciar Sesión',
+            'alumno'
           ),
       ),
       Hero(
@@ -63,6 +63,7 @@ _sliverItems(context) {
             'Docentes',
             'Evaluación Docente - Docente',
             'Presiona para Iniciar Sesión',
+            'docente'
           ),
       ),
       Hero(
@@ -71,6 +72,7 @@ _sliverItems(context) {
             'Coordinador',
             'Evaluación Coordinador - Docente',
             'Presiona para Iniciar Sesión',
+            'docente'
           ),
       ),
       Hero(
@@ -79,6 +81,7 @@ _sliverItems(context) {
             'Administrador',
             'Exclusivamente para el Administrador',
             'Presiona para Iniciar Sesión',
+            'docente'
           ),
       ),
     ]

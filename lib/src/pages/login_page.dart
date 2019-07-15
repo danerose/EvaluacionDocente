@@ -1,13 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 //Own Imports
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 // import 'package:evaluacion_docente/src/pages/main_page.dart';
-import 'package:evaluacion_docente/src/bloc/provider.dart';
+import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 
 class LoginPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +14,7 @@ class LoginPage extends StatelessWidget {
   }
 
   _body(context) {
-    final bloc = Provider.login(context);
+    final bloc = ProviderBloc.data(context);
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
@@ -50,7 +48,7 @@ class LoginPage extends StatelessWidget {
         ));
   }
 
-  _sliverFillRemaining(context, LoginBloc bloc) {
+  _sliverFillRemaining(context, DataBloc bloc) {
     return SliverFillRemaining(
         child: Center(
       child: SingleChildScrollView(
@@ -62,53 +60,61 @@ class LoginPage extends StatelessWidget {
               Colors.black, 5.0, true),
           SizedBox(height: 30),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: _textField(Icons.perm_identity, false, 'Matricula',
-                'Campo Obligatorio', bloc),
-          ),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: _textField(Icons.perm_identity, false, 'Matricula',
+                  'Campo Obligatorio', bloc)),
           SizedBox(height: 30),
-          _button(context)
+          _button(context, bloc)
         ],
       ))),
     ));
   }
 
-  _textField(icon, type, textHint, error, LoginBloc bloc) {
+  _textField(icon, type, textHint, error, DataBloc bloc) {
     return StreamBuilder(
       stream: bloc.enrollmentStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot){
-
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         return TextField(
-          keyboardType: TextInputType.number,
+          keyboardType:
+              TextInputType.numberWithOptions(decimal: false, signed: false),
           decoration: InputDecoration(
-            icon: Icon(icon, color: Colors.black, size: 30),
-            filled: true,
-            fillColor: Color.fromRGBO(0, 0, 0, 0.0),
-            labelText: textHint,
-            counterText: snapshot.data,
-            errorText: snapshot.error
-          ),
+              icon: Icon(icon, color: Colors.black, size: 30),
+              filled: true,
+              fillColor: Color.fromRGBO(0, 0, 0, 0.0),
+              labelText: textHint,
+              errorText: snapshot.error),
           obscureText: type,
           onChanged: bloc.changeEnrollment,
+          maxLength: 9,
         );
       },
     );
   }
 
-  _button(context) {
-    return Container(
-      width: double.infinity,
-      height: 80.0,
-      margin: EdgeInsets.symmetric(horizontal: 60.0),
-      padding: EdgeInsets.symmetric(vertical: 15.0),
-      child: RaisedButton(
-        color: Colors.cyan,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        onPressed: () {},
-        child: components.TextContent(
-            'Entrar', 15.0, TextAlign.center, Colors.white, 0.5, true),
-      ),
-    );
+  _button(context, DataBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.enrollmentStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Container(
+            width: double.infinity,
+            height: 80.0,
+            margin: EdgeInsets.symmetric(horizontal: 60.0),
+            padding: EdgeInsets.symmetric(vertical: 15.0),
+            child: RaisedButton(
+              color: Colors.cyan,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              onPressed: snapshot.hasData
+                  ? () {
+                      bloc.loadProfesors();
+                      Navigator.pushNamedAndRemoveUntil(context, 'evaluation',
+                          (Route<dynamic> route) => false);
+                    }
+                  : null,
+              child: components.TextContent(
+                  'Entrar', 15.0, TextAlign.center, Colors.white, 0.5, true),
+            ),
+          );
+        });
   }
 }
