@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 //Own Imports
 import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
-import 'package:evaluacion_docente/src/models/profesor_model.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class EvaluationListPage extends StatelessWidget {
@@ -15,7 +14,6 @@ class EvaluationListPage extends StatelessWidget {
 
   _body(context) {
     final bloc = ProviderBloc.data(context);
-    print(bloc.profesors);
     return Stack(fit: StackFit.expand, children: <Widget>[
       components.BackgroundImage(),
       _customScrollView(context, bloc)
@@ -47,42 +45,22 @@ class EvaluationListPage extends StatelessWidget {
     );
   }
 
-  // Widget _sliverItems(context, DataBloc bloc) {
-  //   return StreamBuilder(
-  //     stream: bloc.profesorsStream,
-  //     builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-  //       return Center();
-  //     },
-  //   );
-  // }
-
   Widget _sliverItems(BuildContext context, DataBloc bloc) {
     return StreamBuilder(
-      stream: bloc.profesorsStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ProfesorModel>> snapshot) {
-        if (snapshot.hasData) {
-          return SliverList(
-            delegate:SliverChildListDelegate(_cardsTeacher(bloc)),
-          );
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
+        stream: bloc.profesorsStream,
+        builder: (BuildContext context, snapshot) => SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => Hero(
+                        tag: 'Alumno',
+                        child: components.EvaluationCardWidget(
+                          bloc.profesors[index].docente,
+                          bloc.profesors[index].matnom,
+                          bloc.profesors[index].realizado,
+                          'Presiona para Evaluar',
+                        ),
+                      ),
+                  childCount: snapshot.hasData ? bloc.profesors.length : 0),
+        )
     );
-  }
-
-  List<Widget> _cardsTeacher(DataBloc bloc) {
-    return bloc.profesors.map((ProfesorModel prof) {
-      return Hero(
-        tag: 'Alumno',
-        child: components.EvaluationCardWidget(
-          prof.docente,
-          prof.matnom,
-          prof.realizado,
-          'Presiona para Evaluar',
-        ),
-      );
-    }).toList();
   }
 }
