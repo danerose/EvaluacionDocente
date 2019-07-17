@@ -8,7 +8,7 @@ import 'package:evaluacion_docente/src/components/index.dart' as components;
 class EvaluationCardWidget extends StatelessWidget {
   final String name;
   final String subject;
-  final String status;
+  final bool status;
   final String footer;
   EvaluationCardWidget(this.name, this.subject, this.status, this.footer);
 
@@ -111,7 +111,7 @@ _cardContent(context, name, subject, status, footer) {
 _status(status) {
   var color;
   var text;
-  if (status == 'Hecho') {
+  if (status == true) {
     color = Colors.green;
     text = 'Realizado';
   } else {

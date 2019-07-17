@@ -13,12 +13,11 @@ class MyApp extends StatelessWidget {
     ]);
 
     return ProviderBloc(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(primaryColor: Colors.cyan, accentColor: Colors.white),
-        initialRoute: '/',
-        routes: getRoutes(),
-      )
-    );
+        child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primaryColor: Colors.cyan, accentColor: Colors.white),
+      initialRoute: '/',
+      routes: getRoutes(),
+    ));
   }
 }

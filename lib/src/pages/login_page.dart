@@ -93,27 +93,51 @@ class LoginPage extends StatelessWidget {
 
   _button(context, DataBloc bloc) {
     return StreamBuilder(
-        stream: bloc.enrollmentStream,
+        stream: bloc.loadStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Container(
-            width: double.infinity,
-            height: 80.0,
-            margin: EdgeInsets.symmetric(horizontal: 60.0),
-            padding: EdgeInsets.symmetric(vertical: 15.0),
-            child: RaisedButton(
-              color: Colors.cyan,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)),
-              onPressed: snapshot.hasData
-                  ? () {
-                      bloc.loadProfesors();
-                      Navigator.pushNamedAndRemoveUntil(context, 'evaluation',
-                          (Route<dynamic> route) => false);
-                    }
-                  : null,
-              child: components.TextContent(
-                  'Entrar', 15.0, TextAlign.center, Colors.white, 0.5, true),
-            ),
+          if (!bloc.isLoad) {
+            return Container(
+                width: double.infinity,
+                height: 80.0,
+                margin: EdgeInsets.symmetric(horizontal: 60.0),
+                padding: EdgeInsets.symmetric(vertical: 15.0),
+                child: RaisedButton(
+                  color: Colors.cyan,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  onPressed: () {
+                    bloc.loadProfesors().then((value) {
+                      if (value) {
+                        Navigator.pushNamedAndRemoveUntil(context, 'evaluation',
+                            (Route<dynamic> route) => false);
+                      } else {
+                        this._alert(context);
+                      }
+                    });
+                  },
+                  child: components.TextContent('Entrar', 15.0,
+                      TextAlign.center, Colors.white, 0.5, true),
+                ));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.cyan,
+                strokeWidth: 5.0,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+              ),
+            );
+          }
+        });
+  }
+
+  _alert(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Datos incorrectos'),
+            content: Text('Por favor ingresa tus datos correctos'),
           );
         });
   }

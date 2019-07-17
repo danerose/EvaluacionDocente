@@ -2,7 +2,6 @@ import 'dart:convert';
 // import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:evaluacion_docente/src/models/profesor_model.dart';
 
 class HttpProvider {
   final String urlBase = 'https://apimysql-upqroo2019.herokuapp.com';
@@ -18,29 +17,25 @@ class HttpProvider {
       path,
       headers: headers,
     );
-    final Map<String, dynamic> decodedData = json.decode(res.body);
+    Map<String, dynamic> decodedData = json.decode(res.body);
 
     return decodedData['periodo'];
   }
-
-  Future<List<ProfesorModel>> loginNProfesors() async {
+  ///peticion que valida el login y regresa un array de Profesores
+  Future<List> loadProfesors(String enrollment, String period) async {
     final path = '$urlBase/user/login';
-    final data = {"Matricula": "201600090", "Tipo": "1", "Periodo": "3192"};
-    print(data);
-    print(json.encode(data));
-    final res =
-        await http.post(path, body:data, headers: headers);
-    final Map<String, dynamic> decodedData = json.decode(res.body);
-    final List<ProfesorModel> profesors = new List();
+    Map<String,dynamic> body = {"Matricula": enrollment, "Tipo": "1", "Periodo": period};
 
-    print(decodedData);
-    // if (decodedData == null) return [];
+    final res = await http.post(path, body: body, headers: headers);
+    Map<String, dynamic> decodedData = json.decode(res.body);
+    List<dynamic> data = new List();
 
-    // decodedData.forEach((i, profesor) {
-    //   final profTemp = profesorModelFromJson(profesor);
-    //   profesors.add(profTemp);
-    // });
+    if (decodedData["error"] == null) {
+      data = decodedData["usuario"];
+    } else {
+      data.add(false);
+    }
 
-    return profesors;
+    return data;
   }
 }
