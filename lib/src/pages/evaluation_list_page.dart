@@ -63,7 +63,7 @@ class EvaluationListPage extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<List<ProfesorModel>> snapshot) {
         if (snapshot.hasData) {
           return SliverList(
-            delegate:SliverChildDelegate(),
+            delegate:SliverChildListDelegate(_cardsTeacher(bloc)),
           );
         } else {
           return Center(child: CircularProgressIndicator());
