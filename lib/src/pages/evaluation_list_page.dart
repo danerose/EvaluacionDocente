@@ -51,7 +51,7 @@ class EvaluationListPage extends StatelessWidget {
         builder: (BuildContext context, snapshot) => SliverList(
               delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) => Hero(
-                        tag: 'Alumno',
+                        tag: index,
                         child: components.EvaluationCardWidget(
                           bloc.profesors[index].docente,
                           bloc.profesors[index].matnom,

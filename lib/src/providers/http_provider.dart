@@ -21,10 +21,15 @@ class HttpProvider {
 
     return decodedData['periodo'];
   }
+
   ///peticion que valida el login y regresa un array de Profesores
   Future<List> loadProfesors(String enrollment, String period) async {
     final path = '$urlBase/user/login';
-    Map<String,dynamic> body = {"Matricula": enrollment, "Tipo": "1", "Periodo": period};
+    Map<String, dynamic> body = {
+      "Matricula": enrollment,
+      "Tipo": "1",
+      "Periodo": period
+    };
 
     final res = await http.post(path, body: body, headers: headers);
     Map<String, dynamic> decodedData = json.decode(res.body);
@@ -32,6 +37,23 @@ class HttpProvider {
 
     if (decodedData["error"] == null) {
       data = decodedData["usuario"];
+    } else {
+      data.add(false);
+    }
+
+    return data;
+  }
+
+  Future<List> loadQuestions() async {
+    final path = '$urlBase/evaluacion/preguntas';
+    Map<String, dynamic> body = {"Tipo": "1"};
+
+    final res = await http.post(path, body: body, headers: headers);
+    Map<String, dynamic> decodedData = json.decode(res.body);
+    List<dynamic> data = new List();
+
+    if (decodedData["error"] == null) {
+      data = decodedData["preguntas"];
     } else {
       data.add(false);
     }

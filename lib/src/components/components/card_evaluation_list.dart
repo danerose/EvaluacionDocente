@@ -1,8 +1,8 @@
-import 'package:evaluacion_docente/src/pages/test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 //Own Imports
+import 'package:evaluacion_docente/src/pages/questions_page.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class EvaluationCardWidget extends StatelessWidget {
@@ -26,7 +26,7 @@ class EvaluationCardWidget extends StatelessWidget {
              borderRadius: BorderRadius.circular(15.0),
             onTap: () {
               Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => TestPage(name),
+              builder: (BuildContext context) => QuestionsPage(name),
             ));
             },
             child: Container(

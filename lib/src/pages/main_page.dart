@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 //Own Imports
 // import 'package:evaluacion_docente/src/components/index.dart' as components;
 import 'package:evaluacion_docente/src/pages/evaluation_list_page.dart';
-import 'package:evaluacion_docente/src/pages/questions_page.dart';
+import 'package:evaluacion_docente/src/pages/crud_questions_page.dart';
 
 class MainPage extends StatefulWidget{
   final user;

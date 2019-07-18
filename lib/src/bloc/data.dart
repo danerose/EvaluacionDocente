@@ -3,6 +3,7 @@ import 'package:rxdart/rxdart.dart';
 //own import
 import 'package:evaluacion_docente/src/bloc/validators.dart';
 import 'package:evaluacion_docente/src/models/profesor_model.dart';
+import 'package:evaluacion_docente/src/models/question_model.dart';
 import 'package:evaluacion_docente/src/providers/http_provider.dart';
 
 class DataBloc with Validators {
@@ -27,12 +28,16 @@ class DataBloc with Validators {
   ///Datos de lista de maestros
   final _profesorsController = new BehaviorSubject<List<ProfesorModel>>();
 
+  ///Datos de peguntas de la evaluacion
+  final _questionsController = new BehaviorSubject<List<QuestionModel>>();
+
   ///Controlador de datos que manejara la apliacion
 
   ///Dato que controla animaciones de carga
   final _loadController = new BehaviorSubject<bool>();
 
   ///Funciones get para obtener el stream del dato (stream es un oyente)
+  ///con estas funciones se trabajan los cambios de estado de la apliacion
 
   ///Obtener stream periodo
   Stream<String> get periodStream => _periodController.stream;
@@ -45,7 +50,8 @@ class DataBloc with Validators {
   Stream<String> get passwordStream => _passwordController.stream;
 
   ///Obtener stream lista profesores
-  Stream<List<ProfesorModel>> get profesorsStream => _profesorsController.stream;
+  Stream<List<ProfesorModel>> get profesorsStream =>
+      _profesorsController.stream;
 
   ///Obtener strean de carga
   Stream<bool> get loadStream => _loadController.stream;
@@ -69,6 +75,10 @@ class DataBloc with Validators {
   Function(List<ProfesorModel>) get changeProfesors =>
       _profesorsController.sink.add;
 
+  ///Insetar lista de preguntas
+  Function(List<QuestionModel>) get changeQuestions =>
+      _questionsController.sink.add;
+
   //Insertar valores al stream load
   Function(bool) get changeLoad => _loadController.sink.add;
 
@@ -86,6 +96,8 @@ class DataBloc with Validators {
   String get role => _roleController.value;
   //Obtener lista profesores
   List<ProfesorModel> get profesors => _profesorsController.value;
+  //Obtener lista de preguntas
+  List<QuestionModel> get questions => _questionsController.value;
   //obtener load
   bool get isLoad => _loadController.value;
 
@@ -99,6 +111,7 @@ class DataBloc with Validators {
     _evalTypeController?.close();
     _roleController?.close();
     _profesorsController?.close();
+    _questionsController?.close();
     _loadController?.close();
   }
 
@@ -118,14 +131,17 @@ class DataBloc with Validators {
     this.changeLoad(true);
     bool res;
     List<ProfesorModel> profesorTemp = List();
-    final data =
+    final dataProf =
         await _httpProvider.loadProfesors(this.enrollment, this.period);
+    final dataQues = await _httpProvider.loadQuestions();
 
-    if (data[0] == false) {
+    if (dataProf[0] == false) {
       res = false;
     } else {
-      print(data);
-      data.forEach((profJson) {
+      print(dataProf);
+      print("------------");
+      print(dataQues);
+      dataProf.forEach((profJson) {
         final temp = ProfesorModel.fromJson(profJson);
         profesorTemp.add(temp);
       });
