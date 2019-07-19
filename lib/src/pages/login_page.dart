@@ -61,8 +61,7 @@ class LoginPage extends StatelessWidget {
           SizedBox(height: 30),
           Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: _textField(Icons.perm_identity, false, 'Matricula',
-                  'Campo Obligatorio', bloc)),
+              child: _textField(Icons.perm_identity, false, 'Matricula', bloc)),
           SizedBox(height: 30),
           _button(context, bloc)
         ],
@@ -70,7 +69,7 @@ class LoginPage extends StatelessWidget {
     ));
   }
 
-  _textField(icon, type, textHint, error, DataBloc bloc) {
+  _textField(icon, type, textHint, DataBloc bloc) {
     return StreamBuilder(
       stream: bloc.enrollmentStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {

@@ -23,12 +23,13 @@ class HttpProvider {
   }
 
   ///peticion que valida el login y regresa un array de Profesores
-  Future<List> loadProfesors(String enrollment, String period) async {
+  Future<List> loadProfesors(String enrollment,String pass ,String period, String role) async {
     final path = '$urlBase/user/login';
     Map<String, dynamic> body = {
       "Matricula": enrollment,
-      "Tipo": "1",
-      "Periodo": period
+      "Tipo": role,
+      "Periodo": period,
+      "Password":pass
     };
 
     final res = await http.post(path, body: body, headers: headers);

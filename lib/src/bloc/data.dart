@@ -132,7 +132,7 @@ class DataBloc with Validators {
     bool res;
     List<ProfesorModel> profesorTemp = List();
     final dataProf =
-        await _httpProvider.loadProfesors(this.enrollment, this.period);
+        await _httpProvider.loadProfesors(this.enrollment, this.password,this.period,this.role);
     final dataQues = await _httpProvider.loadQuestions();
 
     if (dataProf[0] == false) {
