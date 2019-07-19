@@ -13,46 +13,78 @@ class LandingPage extends StatefulWidget {
   State createState() => LandingPageState();
 }
 
-class LandingPageState extends State<LandingPage> {
+class LandingPageState extends State<LandingPage> with TickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+  bool fade = true;
+  var  _image = AssetImage('assets/images/logo_white.png');
   @override
   void initState() {
-    // super.initState();
-    // Future.delayed(const Duration(seconds: 3),
-    //   () => Navigator.pushReplacementNamed(context, 'home')
-    // );
+    super.initState();
+    controller = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this
+    );
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeIn
+    );
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed && fade == true) {
+         Future.delayed(Duration(seconds: 2),
+          () => setState ((){
+             _image = AssetImage('assets/images/load.gif');
+            Future.delayed(const Duration(seconds: 3),
+              () => Navigator.pushReplacementNamed(context, 'home')
+            );
+          })
+        ); 
+      }
+    });
+    controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(fit: StackFit.expand, children: <Widget>[
-      Container(
-        decoration: BoxDecoration(
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/main.png'),
-                fit: BoxFit.cover)
-       ),
-      ),
-      _containerContent()
-    ]));
+              image: AssetImage('assets/images/main.png'),
+              fit: BoxFit.cover)
+            ),
+          ),
+          _containerContent()
+        ]
+      )
+    );
   }
 
   _containerContent() {
     return Center(
-        child: Column(
+      child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Hero(
-                tag: 'load',
-                child: Image(
-                  width: 250.0,
-                  height: 250.0,
-                  image: AssetImage('assets/images/gif.gif'),
-                )//components.LogoUPQROO(2, 250.0, 250.0),
+              Container(
+                child: FadeTransition(
+                  opacity: animation,
+                  child: Hero(
+                    tag: 'load',
+                    child: Image(
+                      width: 250.0,
+                      height: 250.0,
+                      image:_image,
+                      gaplessPlayback:true
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 20.0),
               components.TextContent('Sistema de Evaluación', 25.0,
