@@ -99,7 +99,7 @@ _cardContent(context, name, subject, status, footer) {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(bottomLeft:Radius.circular(15.0),bottomRight:Radius.circular(15.0)),
           image: DecorationImage(
-          image: AssetImage('assets/images/footer_upqroo.png'),
+          image: AssetImage('assets/images/banner.png'),
           fit: BoxFit.cover
          )
         ),

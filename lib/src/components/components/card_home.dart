@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
+
 class HomeCardWidget extends StatelessWidget {
   final String title;
   final String description;
@@ -24,7 +25,7 @@ class HomeCardWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
             image: DecorationImage(
-              image: AssetImage("assets/images/banner_shape.jpg"),
+              image: AssetImage("assets/images/shape.png"),
               fit: BoxFit.cover,
             ),
           ),

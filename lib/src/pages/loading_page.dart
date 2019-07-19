@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-// Import own files
+
+// Imports files del proyecto
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class LoadingPage extends StatefulWidget {
@@ -16,8 +17,9 @@ class LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2),
-        () => Navigator.pushReplacementNamed(context, 'home'));
+    Future.delayed(const Duration(seconds: 3),
+      () => Navigator.pushReplacementNamed(context, 'home')
+    );
   }
 
   @override
@@ -34,7 +36,7 @@ class LoadingPageState extends State<LoadingPage> {
 
   _containerContent() {
     return Center(
-        child: Column(
+      child: Column(
       children: <Widget>[
         Expanded(
           flex: 2,
@@ -46,24 +48,37 @@ class LoadingPageState extends State<LoadingPage> {
                 child: components.LogoUPQROO(1, 200.0, 200.0),
               ),
               SizedBox(height: 20.0),
-              components.TextContent('Sistema de Evaluación', 20.0,
-                  TextAlign.center, Colors.black, 0.0, true),
+              components.TextContent('Sistema de Evaluación', 25.0,TextAlign.center, Colors.black, 0.0, true),
             ],
           ),
         ),
         Expanded(
-            child: Center(
-          child: _progressBar(),
-        ))
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+               child: _progressBar(),
+              ),
+              Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 10.0),
+                child: components.TextContent('Verificando Conexión...',18.0,TextAlign.center,Colors.black,3.0,false),
+              )
+            ],
+          ),
+        )
       ],
     ));
   }
 
   _progressBar() {
-    return CircularProgressIndicator(
-      backgroundColor: Colors.cyan,
-      strokeWidth: 5.0,
-      valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+    return SizedBox(
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.cyan,
+        strokeWidth: 5.0,
+      ),
+      height: 80.0,
+      width: 80.0,
     );
   }
 }
