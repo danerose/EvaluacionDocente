@@ -45,9 +45,9 @@ class HttpProvider {
     return data;
   }
 
-  Future<List> loadQuestions() async {
+  Future<List> loadQuestions(String evalType) async {
     final path = '$urlBase/evaluacion/preguntas';
-    Map<String, dynamic> body = {"Tipo": "1"};
+    Map<String, dynamic> body = {"Tipo": evalType };
 
     final res = await http.post(path, body: body, headers: headers);
     Map<String, dynamic> decodedData = json.decode(res.body);

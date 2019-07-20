@@ -12,7 +12,7 @@ String questionModelToJson(QuestionModel data) => json.encode(data.toJson());
 class QuestionModel {
   int id;
   String ques;
-  String type;
+  int type;
 
   QuestionModel({
     this.id,

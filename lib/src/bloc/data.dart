@@ -47,7 +47,7 @@ class DataBloc with Validators {
       _enrollmentController.stream.transform(validatorEnrollment);
 
   ///Obtener stream login
-  Stream<String> get passwordStream => _passwordController.stream;
+  Stream<String> get passwordStream => _passwordController.stream.transform(validatorPassword);
 
   ///Obtener stream lista profesores
   Stream<List<ProfesorModel>> get profesorsStream =>
@@ -131,21 +131,30 @@ class DataBloc with Validators {
     this.changeLoad(true);
     bool res;
     List<ProfesorModel> profesorTemp = List();
+    List<QuestionModel> questionsTemp = List();
     final dataProf =
         await _httpProvider.loadProfesors(this.enrollment, this.password,this.period,this.role);
-    final dataQues = await _httpProvider.loadQuestions();
+    final dataQues = await _httpProvider.loadQuestions(this.evalType);
 
     if (dataProf[0] == false) {
       res = false;
     } else {
+
       print(dataProf);
       print("------------");
       print(dataQues);
+
       dataProf.forEach((profJson) {
         final temp = ProfesorModel.fromJson(profJson);
         profesorTemp.add(temp);
       });
+      dataQues.forEach((quesJson){
+        final temp = QuestionModel.fromJson(quesJson);
+        questionsTemp.add(temp);
+      });
+
       this.changeProfesors(profesorTemp);
+      this.changeQuestions(questionsTemp);
       res = true;
     }
     this.changeLoad(false);

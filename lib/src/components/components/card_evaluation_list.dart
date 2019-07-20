@@ -3,14 +3,15 @@ import 'package:flutter/widgets.dart';
 
 //Own Imports
 import 'package:evaluacion_docente/src/pages/questions_page.dart';
+import 'package:evaluacion_docente/src/models/question_model.dart';
+import 'package:evaluacion_docente/src/models/profesor_model.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class EvaluationCardWidget extends StatelessWidget {
-  final String name;
-  final String subject;
-  final bool status;
-  final String footer;
-  EvaluationCardWidget(this.name, this.subject, this.status, this.footer);
+  final List<ProfesorModel> profesors;
+  final int indProf;
+  final List<QuestionModel> questions;
+  EvaluationCardWidget(this.profesors, this.questions, this.indProf);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,11 @@ class EvaluationCardWidget extends StatelessWidget {
              borderRadius: BorderRadius.circular(15.0),
             onTap: () {
               Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => QuestionsPage(name),
+              builder: (BuildContext context) => QuestionsPage(profesors[indProf], questions),
             ));
             },
             child: Container(
-              child: _cardContent(context, name, subject, status, footer),
+              child: _cardContent(context, profesors[indProf].docente, profesors[indProf].matnom, profesors[indProf].realizado, 'Presiona para realizar'),
             )),
       ),
     );

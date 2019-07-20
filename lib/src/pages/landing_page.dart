@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
@@ -46,6 +47,9 @@ class LandingPageState extends State<LandingPage> with TickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
+    final bloc = ProviderBloc.data(context);
+    bloc.loadPeriod();
+    bloc.changeLoad(false);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,

@@ -53,10 +53,9 @@ class EvaluationListPage extends StatelessWidget {
                   (BuildContext context, int index) => Hero(
                         tag: index,
                         child: components.EvaluationCardWidget(
-                          bloc.profesors[index].docente,
-                          bloc.profesors[index].matnom,
-                          bloc.profesors[index].realizado,
-                          'Presiona para Evaluar',
+                          bloc.profesors,
+                          bloc.questions,
+                          index
                         ),
                       ),
                   childCount: snapshot.hasData ? bloc.profesors.length : 0),

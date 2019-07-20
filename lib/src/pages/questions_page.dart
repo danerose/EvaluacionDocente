@@ -2,47 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 //Own Imports
+import 'package:evaluacion_docente/src/models/question_model.dart';
+import 'package:evaluacion_docente/src/models/profesor_model.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class QuestionsPage extends StatefulWidget{
-  final name;
-  QuestionsPage(this.name);
+  final ProfesorModel profesor;
+  final List<QuestionModel> questions;
+  QuestionsPage(this.profesor,this.questions);
   @override
   State createState()  => QuestionsPageState();
 }
 
-var finalScore = 0;
-var questionNumber = 0;
-var itemsTest  = Items();
 
-
-class Items{
-
-  var questions = [
-    "¿El profedor utiliza instrumentos de evaluacion para calificar el avance obtenido en la materia?",
-    "¿El profesor asigna mucha tarea a tal grado que ya quieres darte de baja de la institucion para ser dealer?",
-    "¿El profesor coopera para las pizzas a tal grado de que hasta alcanza para los perros que se encuentran dentro de la instituciob?",
-    "¿El profesor ya te dijo que estas reprobando por faltas pero aun asi no haces nada porque esperas a que la rosa de guadalupe apareca?",
-    "¿El profesor ya te dijo 'No lo se rick' cuando le preguntaste que si con dos tareas de las diez que ha dejado ya pasas?",
-    "¿El profesor ya te reprobo y ahora estas molesto sabiendo que es tu culpa y de nadie mas por haber reprobado?",
-    "¿El profesor ya te dijo que dejes de jugarle al 'salvar el cuatri' porque esta vez no te va a servir de nada?"
-  ];
-
-  var choices = [
+class QuestionsPageState extends State<QuestionsPage> {
+  
+  int finalScore = 0;
+  int questionNumber = 0;
+  List choices = [
     "Nunca",
     "Aveces",
     "Casi Siempre",
     "Siempre",
   ];
-}
 
-class QuestionsPageState extends State<QuestionsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: _body(context,widget.name),
+        body: _body(context,widget.profesor.docente),
       ),
     );
   }
@@ -89,7 +78,7 @@ _flexibleSpace(){
 }
 
 _sliverFillRemaining(context,name) {
-  if(questionNumber < itemsTest.questions.length){
+  if(questionNumber < widget.questions.length){
   return SliverFillRemaining(
    child: Center(
     child: SingleChildScrollView(
@@ -112,14 +101,14 @@ _sliverFillRemaining(context,name) {
               alignment: Alignment.topRight,
               child: Container(
                 padding: EdgeInsets.all(10.0),
-                child: components.TextContent("Pregunta ${questionNumber + 1} de ${itemsTest.questions.length}",
+                child: components.TextContent("Pregunta ${questionNumber + 1} de ${widget.questions.length}",
                   15.0,TextAlign.center,Colors.black,0.0,false),
               ),
             ),
             Container(
               padding: EdgeInsets.all(10.0),
               margin: EdgeInsets.only(top: 30.0,bottom: 30.0),
-              child: components.TextContent(itemsTest.questions[questionNumber],
+              child: components.TextContent(widget.questions[questionNumber].ques,
               20.0,TextAlign.justify,Colors.black,0.0,false),
             ),
             Column(
@@ -166,7 +155,7 @@ _button(option){
     text  = "Regresar";
     color = Colors.red;
   }else{
-    text  = itemsTest.choices[option];
+    text  = choices[option];
     color = Colors.cyan;
   }
   return Container(
@@ -189,7 +178,7 @@ _button(option){
 
 _nextQuestion(){
   setState((){
-    if(questionNumber==itemsTest.questions.length){
+    if(questionNumber==widget.questions.length){
        Navigator.pop(context,'evaluation');
        Future.delayed(Duration(seconds: 1),() => questionNumber = 0);
     }else{
