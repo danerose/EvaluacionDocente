@@ -1,37 +1,53 @@
 // To parse this JSON data, do
 //
-//     final profesor = profesorFromJson(jsonString);
+//     final profesorModel = profesorModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ProfesorModel profesorModelFromJson(String str) => ProfesorModel.fromJson(json.decode(str));
+ProfesorModel profesorModelFromJson(String str) =>
+    ProfesorModel.fromJson(json.decode(str));
 
 String profesorModelToJson(ProfesorModel data) => json.encode(data.toJson());
 
 class ProfesorModel {
-    int id;
-    String enrollment;
-    String firstName;
-    String lastName;
+  int percve;
+  bool realizado;
+  String pdocve;
+  String aluctr;
+  String matcve;
+  String gpocve;
+  String matnom;
+  String docente;
 
-    ProfesorModel({
-        this.id,
-        this.enrollment,
-        this.firstName,
-        this.lastName,
-    });
+  ProfesorModel({
+    this.pdocve,
+    this.aluctr,
+    this.matcve,
+    this.gpocve,
+    this.matnom,
+    this.percve,
+    this.docente,
+    this.realizado=false
+  });
 
-    factory ProfesorModel.fromJson(Map<String, dynamic> json) => new ProfesorModel(
-        id: json["id"],
-        enrollment: json["enrollment"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-    );
+  factory ProfesorModel.fromJson(Map<String, dynamic> json) =>
+      new ProfesorModel(
+        pdocve: json["pdocve"],
+        aluctr: json["aluctr"],
+        matcve: json["matcve"],
+        gpocve: json["gpocve"],
+        matnom: json["matnom"],
+        percve: json["percve"],
+        docente: json["docente"],
+      );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "enrollment": enrollment,
-        "first_name": firstName,
-        "last_name": lastName,
-    };
+  Map<String, dynamic> toJson() => {
+        "pdocve": pdocve,
+        "aluctr": aluctr,
+        "matcve": matcve,
+        "gpocve": gpocve,
+        "matnom": matnom,
+        "percve": percve,
+        "docente": docente,
+      };
 }

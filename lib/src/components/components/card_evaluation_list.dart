@@ -1,16 +1,17 @@
-import 'package:evaluacion_docente/src/pages/test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 //Own Imports
+import 'package:evaluacion_docente/src/pages/questions_page.dart';
+import 'package:evaluacion_docente/src/models/question_model.dart';
+import 'package:evaluacion_docente/src/models/profesor_model.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class EvaluationCardWidget extends StatelessWidget {
-  final String name;
-  final String subject;
-  final String status;
-  final String footer;
-  EvaluationCardWidget(this.name, this.subject, this.status, this.footer);
+  final List<ProfesorModel> profesors;
+  final int indProf;
+  final List<QuestionModel> questions;
+  EvaluationCardWidget(this.profesors, this.questions, this.indProf);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,11 @@ class EvaluationCardWidget extends StatelessWidget {
              borderRadius: BorderRadius.circular(15.0),
             onTap: () {
               Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => TestPage(name),
+              builder: (BuildContext context) => QuestionsPage(profesors[indProf], questions),
             ));
             },
             child: Container(
-              child: _cardContent(context, name, subject, status, footer),
+              child: _cardContent(context, profesors[indProf].docente, profesors[indProf].matnom, profesors[indProf].realizado, 'Presiona para realizar'),
             )),
       ),
     );
@@ -99,7 +100,7 @@ _cardContent(context, name, subject, status, footer) {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(bottomLeft:Radius.circular(15.0),bottomRight:Radius.circular(15.0)),
           image: DecorationImage(
-          image: AssetImage('assets/images/footer_upqroo.png'),
+          image: AssetImage('assets/images/banner.png'),
           fit: BoxFit.cover
          )
         ),
@@ -111,7 +112,7 @@ _cardContent(context, name, subject, status, footer) {
 _status(status) {
   var color;
   var text;
-  if (status == 'Hecho') {
+  if (status == true) {
     color = Colors.green;
     text = 'Realizado';
   } else {
