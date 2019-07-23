@@ -32,6 +32,7 @@ class HomeCardWidget extends StatelessWidget {
           child: InkWell(
             onTap: () {
               bloc.changeRole(role);
+              bloc.changeEvalType((role=="alumno")?"1":"2");
               print(bloc.role);
               Navigator.pushNamed(context, 'login');
             },

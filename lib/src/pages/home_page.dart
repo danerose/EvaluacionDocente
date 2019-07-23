@@ -13,72 +13,60 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          components.BackgroundImage(),
-          _customScrollView(context)])
+        body: Stack(fit: StackFit.expand, children: <Widget>[
+      components.BackgroundImage(),
+      _customScrollView(context)
+    ]));
+  }
+
+  _customScrollView(context) {
+    return CustomScrollView(
+      slivers: <Widget>[_sliverAppBar(), _sliverItems(context)],
     );
   }
 
+  _sliverAppBar() {
+    return SliverAppBar(
+        expandedHeight: 200.0,
+        pinned: true,
+        floating: true,
+        snap: false,
+        flexibleSpace: FlexibleSpaceBar(
+          centerTitle: true,
+          title: components.TextContent(
+              'Usuarios', 20.0, TextAlign.center, Colors.white, 0.0, true),
+          background: components.BackgroundBanner(),
+        ));
+  }
 
-_customScrollView(context) {
-  return CustomScrollView(
-    slivers: <Widget>[
-      _sliverAppBar(),
-      _sliverItems(context)
-    ],
-  );
-}
-
-_sliverAppBar() {
-  return SliverAppBar(
-      expandedHeight: 200.0,
-      pinned: true,
-      floating: true,
-      snap: false,
-      flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title:
-            components.TextContent('Usuarios', 20.0, TextAlign.center, Colors.white,0.0,true),
-        background: components.BackgroundBanner(),
-      ));
-}
-
-_sliverItems(context) {
-  return SliverList(
-    delegate: SliverChildListDelegate(<Widget>[
-      Hero(
-        tag: 'alumno',
+  _sliverItems(context) {
+    return SliverList(
+      delegate: SliverChildListDelegate(<Widget>[
+        Hero(
+          tag: 'Alumnos',
           child: components.HomeCardWidget(
-            'Alumnos',
-            'Evaluación Alumno - Docente',
-            'Presiona para Iniciar Sesión',
-            'alumno'
-          ),
-      ),
-      Hero(
-        tag: 'docente',
+              'Alumnos',
+              'Evaluación Alumno - Docente',
+              'Presiona para Iniciar Sesión',
+              'alumno'),
+        ),
+        Hero(
+          tag: 'Docentes',
           child: components.HomeCardWidget(
-            'Docentes',
-            'Evaluación Docente - Docente',
-            'Presiona para Iniciar Sesión',
-            'docente'
-          ),
-      ),
-      Hero(
-        tag: 'aministrador',
+              'Docentes',
+              'Evaluación Docente - Docente',
+              'Presiona para Iniciar Sesión',
+              'docente'),
+        ),
+        Hero(
+          tag: 'Coordinador',
           child: components.HomeCardWidget(
-            'Administrador',
-            'Exclusivamente para el Administrador',
-            'Presiona para Iniciar Sesión',
-            'aministrador'
-          ),
-      ),
-    ]
-   ),
-  );
- }
-
-
+              'Coordinador',
+              'Evaluación Coordinador - Docente',
+              'Presiona para Iniciar Sesión',
+              'docente'),
+        ),
+      ]),
+    );
+  }
 }

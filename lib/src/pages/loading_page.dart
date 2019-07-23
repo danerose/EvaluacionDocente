@@ -26,6 +26,7 @@ class LoadingPageState extends State<LoadingPage> {
   Widget build(BuildContext context) {
     final bloc = ProviderBloc.data(context);
     bloc.loadPeriod();
+    bloc.changeLoad(false);
     return Scaffold(
         body: Stack(fit: StackFit.expand, children: <Widget>[
       components.BackgroundImage(),

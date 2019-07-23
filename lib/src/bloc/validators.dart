@@ -15,4 +15,14 @@ class Validators {
       }
     }
   );
+
+  final validatorPassword = StreamTransformer<String, String>.fromHandlers(
+    handleData: (password, sink) {
+      if(password.isEmpty){
+        sink.addError("ingrese su contraseña");
+      } else {
+        sink.add(password);
+      }
+    }
+  );
 }

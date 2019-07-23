@@ -60,7 +60,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 30),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _textField(Icons.perm_identity, false, 'Matricula','Campo Obligatorio', bloc)
+                  child: _textFieldEnroll(Icons.perm_identity, false, 'Matricula', bloc)
                 ),
                 SizedBox(height: 30),
                 _button(context, bloc)
@@ -82,11 +82,11 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 30),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _textField(Icons.perm_identity, false, 'Matricula','Campo Obligatorio', bloc)
+                  child: _textFieldEnroll(Icons.perm_identity, false, 'Matricula', bloc)
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _textField(Icons.https, true, 'Contraseña','Campo Obligatorio', bloc)
+                  child: _textFieldPass(Icons.https, true, 'Contraseña', bloc)
                 ),
                 SizedBox(height: 30),
                 _button(context, bloc)
@@ -100,7 +100,7 @@ class LoginPage extends StatelessWidget {
   }
 
 
-  _textField(icon, type, textHint, error, DataBloc bloc) {
+  _textFieldEnroll(icon, type, textHint, DataBloc bloc) {
     return StreamBuilder(
       stream: bloc.enrollmentStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -121,29 +121,74 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  _textFieldPass(icon, type, textHint, DataBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return TextField(
+          keyboardType:
+              TextInputType.numberWithOptions(decimal: false, signed: false),
+          decoration: InputDecoration(
+              icon: Icon(icon, color: Colors.black, size: 30),
+              filled: true,
+              fillColor: Color.fromRGBO(0, 0, 0, 0.0),
+              labelText: textHint,
+              errorText: snapshot.error),
+          obscureText: type,
+          onChanged: bloc.changePassword,
+          maxLength: 9,
+        );
+      },
+    );
+  }
+
   _button(context, DataBloc bloc) {
     return StreamBuilder(
-        stream: bloc.enrollmentStream,
+        stream: bloc.loadStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Container(
-            width: double.infinity,
-            height: 80.0,
-            margin: EdgeInsets.symmetric(horizontal: 60.0),
-            padding: EdgeInsets.symmetric(vertical: 15.0),
-            child: RaisedButton(
-              color: Colors.cyan,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)),
-              onPressed: snapshot.hasData
-                  ? () {
-                      bloc.loadProfesors();
-                      Navigator.pushNamedAndRemoveUntil(context, 'evaluation',
-                          (Route<dynamic> route) => false);
-                    }
-                  : null,
-              child: components.TextContent(
-                  'Entrar', 15.0, TextAlign.center, Colors.white, 0.5, true),
-            ),
+          if (!bloc.isLoad) {
+            return Container(
+                width: double.infinity,
+                height: 80.0,
+                margin: EdgeInsets.symmetric(horizontal: 60.0),
+                padding: EdgeInsets.symmetric(vertical: 15.0),
+                child: RaisedButton(
+                  color: Colors.cyan,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  onPressed: () {
+                    bloc.login().then((value) {
+                      if (value) {
+                        Navigator.pushNamedAndRemoveUntil(context, 'evaluation',
+                            (Route<dynamic> route) => false);
+                      } else {
+                        this._alert(context);
+                      }
+                    });
+                  },
+                  child: components.TextContent('Entrar', 15.0,
+                      TextAlign.center, Colors.white, 0.5, true),
+                ));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.cyan,
+                strokeWidth: 5.0,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+              ),
+            );
+          }
+        });
+  }
+
+  _alert(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Datos incorrectos'),
+            content: Text('Por favor ingresa tus datos correctos'),
           );
         });
   }
