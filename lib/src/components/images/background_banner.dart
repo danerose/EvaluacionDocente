@@ -6,7 +6,7 @@ class BackgroundBanner extends StatelessWidget{
     return Container(
      decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage('assets/images/banner_upqroo.png'),
+        image: AssetImage('assets/images/banner.png'),
         fit: BoxFit.cover
       )
      ),

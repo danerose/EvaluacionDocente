@@ -7,11 +7,14 @@ class TextContent extends StatelessWidget{
   final textAlign;
   final color;
   final letterSpace;
-  final bool bold;
+  final bold;
   TextContent(this.text,this.size,this.textAlign,this.color,this.letterSpace,this.bold,);
   @override
   Widget build(BuildContext context) {
-  if(bold == false){
+    var weigth;
+    if(bold == true ){
+      weigth = FontWeight.bold;
+    }else{weigth = FontWeight.normal;}
     return Text(
      text,
      textAlign: textAlign,
@@ -19,23 +22,10 @@ class TextContent extends StatelessWidget{
        fontSize: size,
        fontFamily: 'Poppins',
        color: color,
-       letterSpacing: letterSpace
+       letterSpacing: letterSpace,
+       fontWeight: weigth
      )
     );
-   }else
-   {
-    return Text(
-     text,
-     textAlign: textAlign,
-     style: TextStyle(
-       fontSize: size,
-       fontFamily: 'Poppins',
-       color: color,
-       letterSpacing: letterSpace,
-       fontWeight: FontWeight.bold
-      )
-    );
-   }
   }
 }
  
