@@ -88,7 +88,7 @@ class DataBloc with Validators {
   String get period => _periodController.value;
   //Obtener valor login
   String get enrollment => _enrollmentController.value;
-  String get password => _enrollmentController.value;
+  String get password => _passwordController.value;
   //Obtener datos generales
   String get firstName => _firstNameController.value;
   String get lastName => _lastNameController.value;
@@ -120,6 +120,11 @@ class DataBloc with Validators {
     _passwordController?.close();
   }
 
+  //checar conexion
+  Future<bool> validateConexion(){
+    return _httpProvider.validateConexion();
+  }
+
   //funciones
   void loadPeriod() async {
     final period = await _httpProvider.getPeriod();
@@ -127,22 +132,21 @@ class DataBloc with Validators {
     print(this.period);
   }
 
-  Future<dynamic> loadProfesors() async {
+  Future<bool> login() async {
     this.changeLoad(true);
     bool res;
     List<ProfesorModel> profesorTemp = List();
     List<QuestionModel> questionsTemp = List();
-    final dataProf =
-        await _httpProvider.loadProfesors(this.enrollment, this.password,this.period,this.role);
+    final dataUser = await _httpProvider.login(this.enrollment, this.password,this.role);
+    final dataProf = await _httpProvider.loadProfesors(this.enrollment, this.period);
     final dataQues = await _httpProvider.loadQuestions(this.evalType);
 
-    if (dataProf[0] == false) {
-      res = false;
-    } else {
-
+    if (dataUser["error"] == null) {
       print(dataProf);
       print("------------");
       print(dataQues);
+
+      this.changeFirstName(dataUser["nombre"]);
 
       dataProf.forEach((profJson) {
         final temp = ProfesorModel.fromJson(profJson);
@@ -156,10 +160,14 @@ class DataBloc with Validators {
       this.changeProfesors(profesorTemp);
       this.changeQuestions(questionsTemp);
       res = true;
+      
+    } else {
+      res = false;
     }
     this.changeLoad(false);
     return res;
   }
+
   // Stream<bool> get validateFormLogin =>
   // Observable.combineLatest2(streamA, streamB, combiner);
 }

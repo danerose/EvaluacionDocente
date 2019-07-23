@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 // Imports files del proyecto
+import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class LandingPage extends StatefulWidget {
@@ -18,6 +18,7 @@ class LandingPageState extends State<LandingPage> with TickerProviderStateMixin 
   AnimationController controller;
   Animation<double> animation;
   bool fade = true;
+  bool conexion = false;
   var  _image = AssetImage('assets/images/logo_white.png');
   @override
   void initState() {
@@ -32,14 +33,22 @@ class LandingPageState extends State<LandingPage> with TickerProviderStateMixin 
     );
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed && fade == true) {
-         Future.delayed(Duration(seconds: 2),
+        
+        Future.delayed(Duration(seconds: 1),
           () => setState ((){
              _image = AssetImage('assets/images/load.gif');
-            Future.delayed(const Duration(seconds: 3),
-              () => Navigator.pushReplacementNamed(context, 'home')
-            );
           })
         ); 
+        Future.delayed(Duration(seconds: 3),
+          () => setState((){
+            if(conexion){
+               Navigator.pushReplacementNamed(context, 'home');
+             }else{
+               this._alert(context);
+             }
+          })
+        );
+        
       }
     });
     controller.forward();
@@ -50,6 +59,8 @@ class LandingPageState extends State<LandingPage> with TickerProviderStateMixin 
     final bloc = ProviderBloc.data(context);
     bloc.loadPeriod();
     bloc.changeLoad(false);
+    bloc.changePassword('000');
+    bloc.validateConexion().then((res) => conexion = res);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -98,5 +109,25 @@ class LandingPageState extends State<LandingPage> with TickerProviderStateMixin 
         ),
       ],
     ));
+  }
+
+  _alert(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Fallo en la conexion'),
+            content: Text('Por favor verifica tu conexion a internet'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Reiniciar'),
+                textColor: Colors.blue,
+                onPressed:()=> Navigator.pushNamedAndRemoveUntil(context, '/',
+                            (Route<dynamic> route) => false),
+              )
+            ],
+          );
+        });
   }
 }

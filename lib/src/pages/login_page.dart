@@ -157,7 +157,7 @@ class LoginPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                   onPressed: () {
-                    bloc.loadProfesors().then((value) {
+                    bloc.login().then((value) {
                       if (value) {
                         Navigator.pushNamedAndRemoveUntil(context, 'evaluation',
                             (Route<dynamic> route) => false);

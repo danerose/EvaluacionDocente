@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 // import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -13,32 +14,71 @@ class HttpProvider {
   //obtiene el periodo actual de la evaluacion
   Future<String> getPeriod() async {
     final path = '$urlBase/user/periodoActual';
-    final res = await http.post(
-      path,
-      headers: headers,
-    );
-    Map<String, dynamic> decodedData = json.decode(res.body);
+     Map<String, dynamic> decodedData;
+    try{
+      final res = await http.post(
+        path,
+        headers: headers,
+      );
+      decodedData = json.decode(res.body);
+    }on SocketException catch (_) {
+      print('not connected');
+    }
 
     return decodedData['periodo'];
   }
 
   ///peticion que valida el login y regresa un array de Profesores
-  Future<List> loadProfesors(String enrollment,String pass ,String period, String role) async {
+  Future<Map> login(String enrollment, String pass, String role) async {
     final path = '$urlBase/user/login';
+    Map<String, dynamic> decodedData;
+    Map<String,dynamic> data = new Map();
     Map<String, dynamic> body = {
       "Matricula": enrollment,
       "Tipo": role,
-      "Periodo": period,
-      "Password":pass
+      "Password": pass
     };
 
-    final res = await http.post(path, body: body, headers: headers);
-    Map<String, dynamic> decodedData = json.decode(res.body);
-    List<dynamic> data = new List();
+    try {
+      final res = await http.post(path, body: body, headers: headers);
+      print(res);
+      decodedData = json.decode(res.body);
 
-    if (decodedData["error"] == null) {
-      data = decodedData["usuario"];
-    } else {
+      if (decodedData["error"] == null) {
+        data = decodedData["usuario"];
+      } else {
+        data = {"error":true};
+      }
+    }on SocketException catch (_) {
+      print('not connected');
+      data = {"error":true};
+    } 
+
+    return data;
+  }
+
+  Future<dynamic> loadProfesors(String enrollment, String period) async{
+    final path = '$urlBase/evaluacion/materias';
+    Map<String, dynamic> decodedData;
+    List<dynamic> data = new List();
+    Map<String, dynamic> body = {
+      "Matricula": enrollment,
+      "Periodo": period
+    };
+
+    try {
+      final res = await http.post(path, body: body, headers: headers);
+      decodedData = json.decode(res.body);
+
+      if (decodedData["error"] == null) {
+        data = decodedData["materias"];
+      } else {
+        data.add(false);
+      }
+    }on SocketException catch (_) {
+      print('not connected');
+      data.add(false);
+    } catch (_){
       data.add(false);
     }
 
@@ -47,18 +87,37 @@ class HttpProvider {
 
   Future<List> loadQuestions(String evalType) async {
     final path = '$urlBase/evaluacion/preguntas';
-    Map<String, dynamic> body = {"Tipo": evalType };
-
-    final res = await http.post(path, body: body, headers: headers);
-    Map<String, dynamic> decodedData = json.decode(res.body);
+    Map<String, dynamic> body = {"Tipo": evalType};
+    Map<String, dynamic> decodedData;
     List<dynamic> data = new List();
 
-    if (decodedData["error"] == null) {
-      data = decodedData["preguntas"];
-    } else {
+    try{
+      final res = await http.post(path, body: body, headers: headers);
+      decodedData = json.decode(res.body);
+      if (decodedData["error"] == null) {
+        data = decodedData["preguntas"];
+      } else {
+        data.add(false);
+      }
+    }on SocketException catch (_) {
+      print('not connected');
       data.add(false);
     }
 
     return data;
+  }
+
+  Future<bool> validateConexion() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        return true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      return false;
+    }
+    return false;
   }
 }
