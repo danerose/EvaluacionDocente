@@ -26,8 +26,8 @@ class EvaluationCardWidget extends StatelessWidget {
             splashColor: Colors.black,
              borderRadius: BorderRadius.circular(15.0),
             onTap: () {
-              Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => QuestionsPage(profesors[indProf], questions),
+              Navigator.pushReplacement(context, new MaterialPageRoute(
+              builder: (BuildContext context) => QuestionsPage(indProf, questions),
             ));
             },
             child: Container(

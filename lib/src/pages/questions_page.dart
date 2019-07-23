@@ -1,3 +1,4 @@
+import 'package:evaluacion_docente/src/bloc/provider_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -7,9 +8,9 @@ import 'package:evaluacion_docente/src/models/profesor_model.dart';
 import 'package:evaluacion_docente/src/components/index.dart' as components;
 
 class QuestionsPage extends StatefulWidget{
-  final ProfesorModel profesor;
+  final int positionProf;
   final List<QuestionModel> questions;
-  QuestionsPage(this.profesor,this.questions);
+  QuestionsPage(this.positionProf,this.questions);
   @override
   State createState()  => QuestionsPageState();
 }
@@ -28,16 +29,18 @@ class QuestionsPageState extends State<QuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = ProviderBloc.data(context);
+    final ind = widget.positionProf;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: _body(context,widget.profesor.docente),
+        body: _body(context,bloc,ind),
       ),
     );
   }
 
 
-_body(context,name) {
+_body(context,DataBloc bloc, ind) {
   return Stack(
     fit: StackFit.expand,
     children: <Widget>[
@@ -51,7 +54,7 @@ _body(context,name) {
       CustomScrollView(
         slivers: <Widget>[
           _sliverAppBar(), 
-          _sliverFillRemaining(context,name)
+          _sliverFillRemaining(context,bloc,ind)
         ],
       )
     ],
@@ -77,7 +80,7 @@ _flexibleSpace(){
   );
 }
 
-_sliverFillRemaining(context,name) {
+_sliverFillRemaining(context,DataBloc bloc, ind) {
   if(questionNumber < widget.questions.length){
   return SliverFillRemaining(
    child: Center(
@@ -94,7 +97,7 @@ _sliverFillRemaining(context,name) {
             ),
             Align(
               alignment: Alignment.center,
-              child: components.TextContent(name,20.0,TextAlign.left,Colors.black,0.0,true),
+              child: components.TextContent(bloc.profesors[ind].docente,20.0,TextAlign.left,Colors.black,0.0,true),
             ),
             SizedBox(height: 50.0),
             Align(
@@ -114,10 +117,10 @@ _sliverFillRemaining(context,name) {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _button(0),
-                _button(1),
-                _button(2),
-                _button(3),
+                _button(0,bloc,ind),
+                _button(1,bloc,ind),
+                _button(2,bloc,ind),
+                _button(3,bloc,ind),
               ],
             )
           ],
@@ -138,7 +141,7 @@ _sliverFillRemaining(context,name) {
              20.0,TextAlign.justify,Colors.black,0.0,false),
            ),
            SizedBox(height: 60.0),
-           _button(4)
+           _button(4,bloc,ind)
          ],
        )
      ),
@@ -148,7 +151,7 @@ _sliverFillRemaining(context,name) {
 
 
 
-_button(option){
+_button(option, DataBloc bloc, ind){
   var text;
   var color;
   if(option == 4){
@@ -169,17 +172,19 @@ _button(option){
         borderRadius: BorderRadius.circular(15.0)
       ),
       onPressed: (){
-         _nextQuestion();
+         _nextQuestion(bloc,ind);
+         
       },
       child:components.TextContent(text,15.0,TextAlign.center,Colors.white,0.5, true),
     ),
   );
 }
 
-_nextQuestion(){
+_nextQuestion(DataBloc bloc, ind){
   setState((){
     if(questionNumber==widget.questions.length){
-       Navigator.pop(context,'evaluation');
+      bloc.profesors[ind].realizado=true;
+       Navigator.pushReplacementNamed(context,'evaluation');
        Future.delayed(Duration(seconds: 1),() => questionNumber = 0);
     }else{
       questionNumber++;
